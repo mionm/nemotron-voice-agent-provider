@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: BSD 2-Clause License
+[project]
+name = "nvidia_flowershop_bot"
+version = "0.1.0"
+description = "NVIDIA Flowershop Bot - WebRTC Voice Interface"
+requires-python = ">=3.12"
+dependencies = [
+    "nvidia-pipecat",
+    "uvicorn>=0.34.0",
+    "python-dotenv>=1.0.1",
+    "rapidfuzz>=3.14.0",
+]
+keywords = ["ai", "voice", "bot", "nat", "agent"]
+classifiers = ["Programming Language :: Python"]
+
+[tool.uv.sources]
+nvidia-pipecat = { path = "../..", editable = true }
+
+[tool.uv]
+override-dependencies = [
+    "nltk>=3.9.3",
+    "protobuf==5.29.6",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+]
