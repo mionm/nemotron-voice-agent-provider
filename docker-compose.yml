@@ -13,7 +13,7 @@ services:
       - NIM_GRPC_API_PORT=50051
       - NIM_TAGS_SELECTOR=${TTS_NIM_TAGS:-name=magpie-tts-multilingual,batch_size=32}
     ports:
-      - "50151:50051"
+      - "${TTS_GRPC_PORT:-50151}:50051"
     ulimits:
       nofile: 2048
     healthcheck:
@@ -48,7 +48,7 @@ services:
       - NIM_GRPC_API_PORT=50052
       - NIM_TAGS_SELECTOR=${ASR_NIM_TAGS:-mode=str,vad=silero}
     ports:
-      - "50152:50052"
+      - "${ASR_GRPC_PORT:-50152}:50052"
     ulimits:
       nofile: 2048
     volumes:
@@ -82,7 +82,7 @@ services:
       - NGC_API_KEY=${NVIDIA_API_KEY}
       - NIM_HTTP_API_PORT=8000
     ports:
-      - "18000:8000"
+      - "${LLM_HTTP_PORT:-18000}:8000"
     ulimits:
       nofile: 2048
     volumes:
@@ -124,7 +124,7 @@ services:
       fi
       "
     ports:
-      - "7860:7860"
+      - "${PYTHON_APP_PORT:-7860}:7860"
     volumes:
       - ./audio_dumps:/app/audio_dumps
       - ./config/:/app/config/
@@ -165,7 +165,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
-      - "9000:8000"
+      - "${UI_PORT:-9000}:8000"
     env_file:
       - .env
 
