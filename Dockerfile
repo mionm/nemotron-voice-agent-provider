@@ -64,6 +64,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends xz-utils dpkg-d
 # For full source compliance, see /app/legal/third_party_oss_license.txt
 RUN uv venv --python python3.12 && . .venv/bin/activate && uv sync --frozen
 
+# The NVIDIA base image can carry a stale /root/nltk_data/tokenizers/punkt_tab.zip
+# that NLTK sees before package paths and rejects as a corrupt zip. Refresh the
+# tokenizer data during build so the voice pipelines can import and start.
+RUN rm -rf /root/nltk_data/tokenizers/punkt_tab /root/nltk_data/tokenizers/punkt_tab.zip && \
+    .venv/bin/python - <<'PY'
+import nltk
+import nltk.data
+import sys
+
+if not nltk.download("punkt_tab", download_dir="/root/nltk_data", quiet=True):
+    sys.exit("failed to download NLTK punkt_tab data")
+nltk.data.find("tokenizers/punkt_tab")
+PY
+
+RUN .venv/bin/python - <<'PY'
+import src.pipeline
+import src.pipeline_websocket
+PY
+
 # Port configuration
 EXPOSE 7860
 
