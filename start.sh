@@ -83,7 +83,8 @@ if ! grep -Eq "^NVIDIA_LLM_URL=https://integrate.api.nvidia.com/v1" .env; then
 fi
 
 echo "[nemotron-voice-agent] Starting in API mode (skip local ASR/TTS/LLM containers)..."
-"${COMPOSE_CMD[@]}" up -d --build --no-deps python-app ui-app
+"${COMPOSE_CMD[@]}" up -d --build --no-deps python-app
+"${COMPOSE_CMD[@]}" up -d --build --no-deps ui-app
 
 echo
 echo "[nemotron-voice-agent] Started."
